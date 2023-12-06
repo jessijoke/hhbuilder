@@ -9,7 +9,9 @@ const submitButton = document.querySelector('button[type="submit"]');
 ageInput.setAttribute('type', 'number');
 
 // set aria-label for relationshipInput to Relationship
-relationshipInput.setAttribute('aria-label', 'Relationship');
+ageInput.setAttribute('aria-label', 'age of household member');
+relationshipInput.setAttribute('aria-label', 'relationship to applicant');
+smokerInput.setAttribute('aria-label', 'smoking status of household member');
 
 // Create error elements
 const ageErrorElement = document.createElement('div');
@@ -24,12 +26,16 @@ ageErrorElement.setAttribute('aria-live', 'polite');
 relationshipErrorElement.setAttribute('aria-live', 'polite');
 
 // Add accessible names to buttons
-addButton.setAttribute('aria-label', 'Add Household Member');
-submitButton.setAttribute('aria-label', 'Submit Household');
+addButton.setAttribute('aria-label', 'add household member');
+submitButton.setAttribute('aria-label', 'submit household');
 
 // Add error elements to the DOM
 ageInput.parentNode.appendChild(ageErrorElement);
 relationshipInput.parentNode.appendChild(relationshipErrorElement);
+
+// Get error elements
+const ageError = document.querySelector('.ageError');
+const relationshipError = document.querySelector('.relationshipError');
 
 // Add event listener to the add button
 addButton.addEventListener('click', (e) => {
@@ -49,11 +55,8 @@ addButton.addEventListener('click', (e) => {
 // check if age exists and is over 0, and if relationship exists
 function validateForm() {
     // get age and relationship values
-    const age = document.getElementById('age').value;
-    const relationship = document.getElementById('rel').value;
-    // get error elements
-    const ageError = document.querySelector('.ageError');
-    const relationshipError = document.querySelector('.relationshipError');
+    const age = ageInput.value;
+    const relationship = relationshipInput.value;
     // create consts for error messages
     const ageExistError = "Age is required";
     const ageOverZeroError = "Age must be over 0";
@@ -74,9 +77,6 @@ function validateForm() {
 
 // reset error fields
 function resetErrorFields() {
-    // get error elements
-    const ageError = document.querySelector('.ageError');
-    const relationshipError = document.querySelector('.relationshipError');
     // reset error fields
     ageError.textContent = '';
     relationshipError.textContent = '';
@@ -98,19 +98,20 @@ function createHouseholdMember(age, relationship, smoker) {
 
     // create a div element to display age
     const memberAge = document.createElement('div');
-    memberAge.setAttribute('name', 'Age');
+    memberAge.setAttribute('name', 'household member age');
     memberAge.classList.add('memberAge');
     memberAge.textContent = `age: ${age}`;
 
     // create a div element to display relationship
     const memberRelationship = document.createElement('div');
-    memberRelationship.setAttribute('name', 'Relationship');
+    memberRelationship.setAttribute('name', 'household member relationship');
     memberRelationship.classList.add('memberRelationship');
     memberRelationship.textContent = `relationship: ${relationship}`;
 
     // create a div element to display smoking status
     const memberSmoker = document.createElement('div');
-    memberSmoker.setAttribute('name', 'Smoker');
+    memberSmoker.setAttribute('name', 'household member smoker');
+    memberSmoker.setAttribute('aria-label', 'smoking status');
     memberSmoker.classList.add('memberSmoker');
     memberSmoker.textContent = `smoker: ${smoker}`;
 
@@ -144,9 +145,9 @@ function createHouseholdMember(age, relationship, smoker) {
 
 // Clear form fields
 function clearFormFields() {
-    document.getElementById('age').value = '';
-    document.getElementById('rel').value = '';
-    document.getElementById('smoker').checked = false;
+    ageInput.value = '';
+    relationshipInput.value = '';
+    smokerInput.checked = false;
 }
 
 // prevent page refresh when submit button is clicked
@@ -186,8 +187,6 @@ function submitForm() {
     const debugElement = document.querySelector('.debug');
     //fake a trip to the server
     sendForm(household, debugElement);
-    // clear household list
-    householdMemberList.innerHTML = '';
 }
 
 // fake a trip to the server

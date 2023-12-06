@@ -1,3 +1,8 @@
+# Notes to run
+
+I recommend using a tool like Live Server (a vscode extension) to easily run this project. 
+Considering this was form project, I focused on validation and accessibility.
+
 # Hhbuilder
 
 Your application needs a way to capture information about a household applying
